@@ -18,11 +18,11 @@ public class CatalogServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        InitialContext context = null;
+        InitialContext context;
         try {
             context = new InitialContext();
-            autoService = (AutoService) context.lookup("java:/comp/env/bean/auto-service");//TODO не понятно что откуда берет
-            fileService = (FileService) context.lookup("java:/comp/env/bean/file-service");//TODO не понятно что откуда берет
+            autoService = (AutoService) context.lookup("java:/comp/env/bean/auto-service");
+            fileService = (FileService) context.lookup("java:/comp/env/bean/file-service");
         } catch (NamingException e) {
             e.printStackTrace();
             throw new ServletException(e);

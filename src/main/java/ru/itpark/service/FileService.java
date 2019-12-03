@@ -11,7 +11,7 @@ public class FileService {
     private final String uploadPath;
 
     public FileService() throws IOException { //создаем путь через переменную среды если не создан
-        uploadPath = System.getenv("UPLOAD_PATH");//TODO ? что находим
+        uploadPath = System.getenv("UPLOAD_PATH");
         Files.createDirectories(Paths.get(uploadPath));
     }
 
@@ -20,7 +20,7 @@ public class FileService {
         Files.copy(path, sos);
     }
 
-    public String writeFile(Part part) throws IOException { //TODO ? что то записываем
+    public String writeFile(Part part) throws IOException { // записываем имя файла как ID и грузим в папку upload
         var id = UUID.randomUUID().toString();
         part.write(Paths.get(uploadPath).resolve(id).toString());
         return id;
