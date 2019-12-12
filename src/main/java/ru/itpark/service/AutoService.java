@@ -13,27 +13,29 @@ import java.util.UUID;
 public class AutoService {
     private final DataSource ds;
 
-    public AutoService() throws NamingException, SQLException { //подключаемся к базе данных и создаем таблицу если она не существует с параметрами: id, name, description, image.
+    public AutoService() throws NamingException, SQLException {
         var context = new InitialContext();
-        ds = (DataSource) context.lookup("java:/comp/env/jdbc.db");
+        ds = (DataSource) context.lookup("java:/comp/env/jdbc/db");
         try (var conn = ds.getConnection()) {
             try (var stmt = conn.createStatement()) {
-                stmt.execute("CREATE TABLE IF NOT EXISTS autos (id TEXT PRIMARY KEY, name TEXT NOT NULL, description TEXT NOT NULL, image TEXT)");
+                stmt.execute("CREATE TABLE IF NOT EXISTS autos (id TEXT PRIMARY KEY , name TEXT NOT NULL , description TEXT NOT NULL , image TEXT)");
             }
         }
     }
 
-    public List<Auto> getAll() throws SQLException { //создаем список и добавляем все Авто из таблицы.
+    public List<Auto> getAll() throws SQLException {
         try (var conn = ds.getConnection()) {
             try (var stmt = conn.createStatement()) {
                 try (var rs = stmt.executeQuery("SELECT id, name, description, image FROM autos")) {
                     var list = new ArrayList<Auto>();
+
                     while (rs.next()) {
                         list.add(new Auto(
                                 rs.getString("id"),
                                 rs.getString("name"),
                                 rs.getString("description"),
-                                rs.getString("image")));
+                                rs.getString("image")
+                        ));
                     }
                     return list;
                 }
@@ -41,9 +43,9 @@ public class AutoService {
         }
     }
 
-    public void create(String name, String description, String image) throws SQLException { //Заполняем таблицу данными
-        try (var conn = ds.getConnection()) {
-            try (var stmt = conn.prepareStatement("INSERT INTO autos (id, name, description, image) VALUES (?,?,?,?)")) {
+    public void create(String name, String description, String image) throws SQLException {
+        try(var conn = ds.getConnection()) {
+            try(var stmt = conn.prepareStatement("INSERT INTO autos (id, name, description, image) VALUES (?, ?, ?, ?)")) {
                 stmt.setString(1, UUID.randomUUID().toString());
                 stmt.setString(2, name);
                 stmt.setString(3, description);
@@ -52,5 +54,4 @@ public class AutoService {
             }
         }
     }
-
 }

@@ -18,7 +18,7 @@ public class CatalogServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        InitialContext context;
+        InitialContext context = null;
         try {
             context = new InitialContext();
             autoService = (AutoService) context.lookup("java:/comp/env/bean/auto-service");
@@ -38,23 +38,23 @@ public class CatalogServlet extends HttpServlet {
             e.printStackTrace();
             throw new ServletException(e);
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            req.setCharacterEncoding("UTF-8");
             var name = req.getParameter("name");
             var description = req.getParameter("description");
             var part = req.getPart("image");
+
             var image = fileService.writeFile(part);
+
             autoService.create(name, description, image);
-            resp.sendRedirect(String.join("/", req.getContextPath(), req.getServletPath())); //отправляем на главную страницу
+            resp.sendRedirect(String.join("/", req.getContextPath(), req.getServletPath()));
         } catch (SQLException e) {
             e.printStackTrace();
             throw new ServletException(e);
         }
-
     }
-
 }

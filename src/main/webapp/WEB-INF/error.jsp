@@ -7,16 +7,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Auto Catalog</title>
-    <%@include file="bootstrap-scc.jsp" %>
+    <%@ include file="bootstrap-css.jsp" %>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="cool">
+        <div class="col">
             <h1>Some error happened</h1>
-         </div>
+        </div>
     </div>
 </div>
-<%@include file="bootstrap-scripts.jsp" %>
+<%@ include file="bootstrap-scripts.jsp" %>
 </body>
 </html>
